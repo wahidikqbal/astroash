@@ -4,30 +4,44 @@
   import { Label } from '$lib/components/ui/label';
   import * as Card from '$lib/components/ui/card';
 
-  let email = '';
-  let password = '';
-  let loading = false;
-  let error = '';
+  let email = $state('');
+  let password = $state('');
+  let loading = $state(false);
+  let error = $state('');
 
   async function handleSubmit() {
+    if (!email || !password) {
+      error = 'Email dan password wajib diisi';
+      return;
+    }
+
     loading = true;
     error = '';
 
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch('/api/login', { // Proxy ke API backend
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        headers: {
+          'Content-Type': 'application/vnd.api+json',
+          'Accept': 'application/vnd.api+json',
+        },
+        body: JSON.stringify({ 
+          data: {
+            attributes: { email, password },
+            relationships: {},
+            type: 'user',
+          }
+        }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const data = await res.json();
-        error = data.message || 'Login gagal';
+        error = data.errors?.[0]?.detail || data.message || 'Login gagal';
         return;
       }
 
-      // Redirect setelah login berhasil
-      window.location.href = '/dashboard';
+      window.location.href = '/';
     } catch (e) {
       error = 'Terjadi kesalahan, coba lagi';
     } finally {

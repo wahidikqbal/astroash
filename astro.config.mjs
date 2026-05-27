@@ -15,6 +15,14 @@ export default defineConfig({
     ssr: {
       noExternal: ['bits-ui', 'shadcn-svelte', '@internationalized/date'],
     },
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:4000',
+          changeOrigin: true,
+        },
+      },
+    },
   },
   integrations: [svelte()]
 });
