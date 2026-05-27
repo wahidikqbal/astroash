@@ -1,9 +1,20 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-// https://astro.build/config
+import svelte from '@astrojs/svelte';
+import path from 'path';
+
 export default defineConfig({
   vite: {
-    plugins: [tailwindcss()]
-  }
+    plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        $lib: path.resolve('./src/lib'),
+      },
+    },
+    ssr: {
+      noExternal: ['bits-ui', 'shadcn-svelte', '@internationalized/date'],
+    },
+  },
+  integrations: [svelte()]
 });
