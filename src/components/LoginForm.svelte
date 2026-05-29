@@ -41,7 +41,7 @@
         return;
       }
 
-      window.location.href = '/api/me';
+      window.location.href = '/me';
     } catch (e) {
       error = 'Terjadi kesalahan, coba lagi';
     } finally {
