@@ -1,0 +1,15 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MePage from '../../components/MePage.svelte';
+
+export const prerender = false;
+
+const tokenCookie = Astro.cookies.get('token');
+if (!tokenCookie?.value) {
+  return Astro.redirect('/auth/login');
+}
+---
+
+<Layout>
+  <MePage client:load />
+</Layout>

@@ -3,8 +3,13 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import svelte from '@astrojs/svelte';
 import path from 'path';
+import node from '@astrojs/node';
 
 export default defineConfig({
+  output: 'server',
+  adapter: node({
+    mode: 'standalone'
+  }),
   vite: {
     plugins: [tailwindcss()],
     resolve: {

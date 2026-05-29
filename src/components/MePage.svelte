@@ -15,11 +15,13 @@
 
   onMount(async () => {
     try {
-      const res = await fetch('/api/me', {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-      });
-
+      const res = await fetch('/api/me', { method: 'GET' });
+      
+      if (res.status === 401) {
+        window.location.href = '/auth/login';
+        return;
+      }
+      
       const data = await res.json();
 
       if (!res.ok) {
@@ -57,16 +59,16 @@
       {:else if user}
         <div class="space-y-4">
           <div>
-            <label class="text-sm font-medium text-slate-600">ID</label>
+            <span class="text-sm font-medium text-slate-600">ID</span>
             <p class="text-base">{user.id}</p>
           </div>
           <div>
-            <label class="text-sm font-medium text-slate-600">Email</label>
+            <span class="text-sm font-medium text-slate-600">Email</span>
             <p class="text-base">{user.email}</p>
           </div>
           {#each Object.entries(user).filter(([key]) => !['id', 'email'].includes(key)) as [key, value]}
             <div>
-              <label class="text-sm font-medium text-slate-600 capitalize">{key}</label>
+              <span class="text-sm font-medium text-slate-600 capitalize">{key}</span>
               <p class="text-base">{typeof value === 'object' && value !== null ? JSON.stringify(value) : String(value)}</p>
             </div>
           {/each}

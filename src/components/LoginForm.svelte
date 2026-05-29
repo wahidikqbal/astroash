@@ -41,7 +41,7 @@
         return;
       }
 
-      window.location.href = '/me';
+      window.location.href = '/auth/me';
     } catch (e) {
       error = 'Terjadi kesalahan, coba lagi';
     } finally {

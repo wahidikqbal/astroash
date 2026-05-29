@@ -1,6 +1,17 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import LoginForm from '../../components/LoginForm.svelte';
+
+export const prerender = false; // menggunakan SSR untuk halaman login
+
+// Check jika sudah login, redirect ke /auth/me
+const token = Astro.cookies.get('token');
+if (token?.value) {
+  return new Response(null, {
+    status: 302,
+    headers: { Location: '/auth/me' }
+  });
+}
 ---
 
 <Layout title="Login">
